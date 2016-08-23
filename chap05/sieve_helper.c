@@ -98,24 +98,14 @@ int num_odd_past(int m, int bnd) {
 
 void initialize_grid(char **grid, int len) {
 
-    char *curr;
-    char *end;
-
     /* Allocate memory to store this process's share of the prime number grid.
      * The amount of memory allocated is enough to store a value for every odd
      * number b/w low_value and high_value, inclusive.
      */
-    *grid = (char *) malloc(len);
+    *grid = calloc(len, 1);
     if (*grid == NULL) {
 	fprintf(stderr, "error allocating memory for prime number grid\n");
 	MPI_Abort(MPI_COMM_WORLD, MPI_ERR_ARG);
-    }
-
-    // Initialize values to not yet marked state
-    curr = *grid;
-    end = curr + len;
-    for ( ; curr < end; curr++) {
-	*curr = NOT_MARK;
     }
 }
 
@@ -398,6 +388,77 @@ void fill_grid_local_v3(char *grid_local, char *grid_rootn, int rootn_setsize,
 	subblock_high += p;	
     }
 }
+
+
+
+
+/* Select every rank-th prime in {3, ..., rootn} to mark multiples of off in the
+ * set {rootn + 1, ..., n}, such that the multiples are larger then the square
+ * of the prime
+ */
+
+void fill_grid_local_v4(char *grid_local, char *grid_rootn, int rootn_setsize,  
+			int local_low, int local_setsize, int rank, int size) {
+    
+    int currval;    // value which me mark multiples of in grid
+    int curr_idx;   // index corresp. to currval in array of odds {1, 3, ...}
+    int start_idx;  // index in grid_local to start marking of multiples
+
+    int ctr;  // **********
+    int k;
+
+    ctr = rank;
+    curr_idx = 0;
+
+    /* Each iteration marks all of the multiples of currval (such that the
+     * multiple is >= currval^2) in the grid as having factors, and then finds
+     * the next value to use for currval (i.e. the next smallest prime number).
+     */
+    while (1) {
+
+	/* Walk through the beginning of the prime number grid to find the index
+	 * of the value that we will begin marking off multiples of in the next
+	 * iteration.
+	 */
+	while (++curr_idx < rootn_setsize) {
+
+	    // case: value corresp. to grid elem. not marked as having a factor
+	    if(! grid_rootn[curr_idx]) {
+
+		// case: it's the rank-th turn to mark off multiples
+		if (! (++ctr % size)) {
+		    // exit inner loop
+		    break;
+		}
+	    }
+	} // end find next rank-th prime number index loop
+	
+	// case: we've iterated through the first rootn numbers; exit main loop
+	if (curr_idx == rootn_setsize) {
+	    break;
+	}
+
+	// Translate index to the value that the index represents
+	currval = (2 * curr_idx) + 1;
+
+	/* Calculate the local index of the first odd-valued multiple of currval
+	 * in the set that is also greater than currval^2
+	 */
+	start_idx = num_odd_past(currval, local_low);
+
+	/* Step through the local prime grid marking off multiples of currval as
+	 * being not primes.  Note that since the local prime grid doesn't - in
+	 * concept - include even numbers, so each step effectively marks off
+	 * every other multiple of currval.  This however is as desired, since
+	 * every second multiple of currval is an even number.
+	 */
+	for (k = start_idx; k < local_setsize; k += currval) {
+	    grid_local[k] = YES_MARK;
+	}
+
+    } // end mark off every rank-th prime number multiples loop
+}
+
 
 
 

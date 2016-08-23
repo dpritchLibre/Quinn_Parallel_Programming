@@ -35,8 +35,8 @@ The following programs are included in the repository.
 
     * `sieve_quinn`: Quinn's version of the Sieve of Eratosthenes
 	
-	* `exer05_06.c`: Modify Sieve algorithm to not set aside memory for even
-      numbers
+	* `exer05_06.c`: Modify Sieve algorithm so as to not set aside memory for
+      even numbers
 	  
     * `exer05_07.c`: Modify Sieve algorithm so that each process finds prime
       numbers between `2` and `floor( sqrt(n) )`, rather than waiting for a
@@ -45,5 +45,9 @@ The following programs are included in the repository.
     * `exer05_08.c`: Modify Sieve algorithm to improve the cache hit rate by
       decomposing the section of numbers each process is responsible for into
       further sub-blocks
+	  
+    * `exer05_09.c`: Functional decomposition of Sieve algorithm
+
+    * `exer05_11.c`: Compute `1/1 + 1/2 + ... + 1/n` for some choice of `n`
 	
 ********************
