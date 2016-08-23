@@ -4,9 +4,15 @@ the textbook _Parallel Programming in C with MPI and OpenMP_ by Michael Quinn.
 
 ********************
 
-The root directory contains the following files:
+The following programs are included in the repository.  
 
-4. Message-Passing Progamming
+1. **Motivations and History**
+
+2. **Parallel Architectures**
+
+3. **Parallel Algorithm Design**
+
+4. **Message-Passing Progamming**
 
 	* `exer04_06.c`: hello, world program
 	
@@ -25,7 +31,19 @@ The root directory contains the following files:
 	
 	* `exer04_12.c`: calculate an integral using Simpson's rule
 	
-5. The Sieve of Eratosthenes
+5. **The Sieve of Eratosthenes**
 
+    * `sieve_quinn`: Quinn's version of the Sieve of Eratosthenes
+	
+	* `exer05_06.c`: Modify Sieve algorithm to not set aside memory for even
+      numbers
+	  
+    * `exer05_07.c`: Modify Sieve algorithm so that each process finds prime
+      numbers between `2` and `floor( sqrt(n) )`, rather than waiting for a
+      broadcast from the `0`-th process
+	  
+    * `exer05_08.c`: Modify Sieve algorithm to improve the cache hit rate by
+      decomposing the section of numbers each process is responsible for into
+      further sub-blocks
 	
 ********************
