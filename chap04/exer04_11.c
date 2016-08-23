@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
 
     // Sum the unnormalized processes areas
     MPI_Reduce(&local_area_unnorm, &global_area, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
-    // Finalize the MPI environment.
+    // Finalize the MPI environment
     MPI_Finalize();
 
     // Normalize global area
