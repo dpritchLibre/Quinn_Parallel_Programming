@@ -25,7 +25,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "sieve-helper.h"
+#include "sieve_helper.h"
 #include "parse_args.h"
 
 
@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
      * through the command line then n will be set to this value by parse_args
      */
     n = 1e6;
-    parse_args(argc, argv, &n, NULL);
+    parse_args(argc, argv, NULL, &n, NULL);
     rootn = sqrt(n);
 
     /* Calculate the smallest odd number in the rank-th set, the largest number

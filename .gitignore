@@ -6,8 +6,10 @@
 Workspace
 
 # chapter 4
-exer04_0[6-9]
-exer04_1[0-2]
+chap04/exer04_0[6-9]
+chap04/exer04_1[0-2]
 
 # chapter 5
-exer05_0[6-8]
+chap05/sieve_quinn
+chap05/exer05_0[6-8]
+chap05/exer05_11

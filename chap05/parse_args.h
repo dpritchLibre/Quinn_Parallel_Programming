@@ -1,2 +1,2 @@
 
-void parse_args(int argc, char* argv[], int *n, int *p);
+void parse_args(int argc, char* argv[], int *d, int *n, int *p);

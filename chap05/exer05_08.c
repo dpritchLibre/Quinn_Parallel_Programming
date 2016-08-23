@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "sieve-helper.h"
+#include "sieve_helper.h"
 #include "parse_args.h"
 
 
@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
      */
     n = 1e6;
     p = 2e4;
-    parse_args(argc, argv, &n, &p);
+    parse_args(argc, argv, NULL, &n, &p);
     rootn = sqrt(n);
     rootn_setsize = (rootn + 1) / 2;
 
@@ -72,8 +72,8 @@ int main(int argc, char *argv[]) {
 	p--;
     }
     
-    /* case: at least 2 values for every set; enough to ensure that any given odd value
-     * is only included in 1 set
+    /* case: less than 2 values for every set; requiring 2 per process is enough
+     * to ensure that any given odd value is only included in 1 set
      */
     if ((n - rootn) < (2 * size)) {
     	fprintf(stderr, "the ratio of n / size is too low\n");

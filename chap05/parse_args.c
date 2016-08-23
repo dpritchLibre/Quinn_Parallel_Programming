@@ -10,7 +10,7 @@
  * to *n.
  */
 
-void parse_args(int argc, char* argv[], int *n, int *p) {
+void parse_args(int argc, char *argv[], int *d, int *n, int *p) {
 
     int opt;        // argument type info
     char* endptr;   // point to next char after int read (should point to '\0')
@@ -18,8 +18,23 @@ void parse_args(int argc, char* argv[], int *n, int *p) {
     // To distinguish success / failure after a call to strtol or strtod
     errno = 0;
 
-    while ((opt = getopt(argc, argv, "n:p:")) != -1) {
+    while ((opt = getopt(argc, argv, "d:n:p:")) != -1) {
 	switch (opt) {
+	case 'd':
+	    *d = strtol(optarg, &endptr, 10);
+	    if (*endptr != '\0') {
+		fprintf(stderr, "Invalid argument for d\n");
+		MPI_Abort(MPI_COMM_WORLD, MPI_ERR_ARG);
+	    }
+	    else if (errno != 0) {
+		fprintf(stderr, "Underflow / overflow for d\n");
+		MPI_Abort(MPI_COMM_WORLD, MPI_ERR_ARG);
+	    }
+	    else if (*d < 0) {
+		fprintf(stderr, "d must be >= 0\n");
+		MPI_Abort(MPI_COMM_WORLD, MPI_ERR_ARG);
+	    }
+	    break;
 	case 'n':
 	    *n = strtol(optarg, &endptr, 10);
 	    if (*endptr != '\0') {
